@@ -7,13 +7,21 @@
     <script src="script.js"></script>
   </head>
   <body>
-    <!-- Intro: details -->
-    <div id="content">  
-      <h1>Anya's Portfolio</h1>
-      <p>Click here to get a random message:</p>
+    
+    <div id="content">
+      <!--Header  -->
+      <h1 style="margin:0;padding:0; font-family:'Brush Script MT'; font-size:80px">
+          Anya's Portfolio
+      </h1>
+      <h2 style="margin:0;padding:0">A portfolio made for SPS2020</h2>
+      <hr>
+
+      
+      <p style="margin-top:30px">Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
       
+      <!-- Intro: details --> 
       <p>My name is Anya Ellis. I am an undergrad at the University of Illinois at Chicago (UIC). 
           I am majoring in computer science with a minor in mathematics. Though I go to school in 
           Chicago, I from the wild and wonderful state of West Virginia. 
@@ -25,10 +33,13 @@
           However, I might be sneezing. Achoo!
       </p>
       
-      <img src="images/train_martinsburg.jpg"/> 
-    </div>
+      <img src="images/train_martinsburg.jpg" alt="martinsburg train station"/> <br>
 
-    <!-- List some experiences & projects -->
+
+    <div id="leftbox">
+
+        <!-- List some experiences & projects -->
+    <h3>A List of Some of My Experiences & Projects</h3>
     <ul>
         <li>Current Intern at Northrop Grumman</li>
         <li>1st Place Winner in the section Oral Computer Science Presentations at 2020 Illinois LSAMP Symposium</li>
@@ -37,11 +48,25 @@
         <li>My Spanish Language Python website</li>
             <ul><li>This was created during my gap year. The site is basically defunct and you need to know Spanish.</li></ul>
     </ul>
+    
+    <p style="padding:10">If you want to learn more, check out my resume to the right or the links below.</p>
+
     <!-- Link linkedin & github, resume small -->
-    <a href="https://www.linkedin.com/in/anya-e-95b939125/">LinkedIn</a>
-    <a href="github.com/SunWithIssues">Github: SunWithIssues</a>
-    <a href="github.com/Refresca">School Github: Refresca</a>
-    <a href="pybasico.com">Spanish language Website</a>
+    <a href="https://www.linkedin.com/in/anya-e-95b939125/">LinkedIn</a> <br>
+    <a href="https://github.com/SunWithIssues">Github: SunWithIssues</a> <br>
+    <a href="https://github.com/Refresca">School Github: Refresca</a>    <br>
+    <a href="http://www.pybasico.com">Spanish language Website</a>
+    </div>
+
+    <div id="midbox"></div>
+    
+    <div id="rightbox">
+        <iframe src="./docs/resume.pdf" height="500" width="400"><>
+    </div>
+
+
+
+ 
 
     <!-- Extra things I do -->
         <!-- 
@@ -49,7 +74,14 @@
             Study korean,
             Watch anime & korean dramas
          -->
+    <h3>Extracurricular Activities</h3>
+    <p>Welp, some other activities I do is play chess (lichess account is kurohaze) as well as baduk (OGS handle is 
+        kurohaze). I also study the Korean language and read a bunch of comics from Japan, Korea and U.S. A huge fan 
+        of Saga, Monstress, Tower of God, and Akatsuki no Yona. If you couldn't tell, I also watch anime and korean
+        dramas.
+     </p>
 
+    </div>
 
 
   </body>

@@ -5,6 +5,24 @@ body {
   color: #ffffff;
 }
 
+#leftbox {
+    float: left; 
+    width: 35%; 
+    height: 500px; 
+}
+
+#midbox {
+    float: left;
+    width: 15%;
+    height: 500;
+}
+
+#rightbox {
+    float: right;
+    width: 50%;
+    height: 500px;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
