@@ -1,8 +1,13 @@
 /* Come back and make a dark/light mode switch */
 
 body {
-  background-color: #101010;
+  /* background-color: #101010; */
   color: #ffffff;
+  background-image: url("./images/bg-right.jpg"), url("./images/grass.jpg");
+  background-position: right top, left bottom;
+  background-repeat: repeat-y, no-repeat;
+  background-size: auto, 100%;
+
 }
 
 #leftbox {
@@ -24,9 +29,14 @@ body {
 }
 
 #content {
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
   width: 650px;
+}
+
+#banner {
+  background-color: #101010; 
+  color: #ffffff;
 }
 
 #banner h1 {
