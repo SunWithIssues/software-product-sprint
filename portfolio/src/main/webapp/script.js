@@ -26,3 +26,14 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+/**
+ * Using fetch by using the async and await keywords. This
+ * allows you to use the return values directly instead of going through
+ * Promises. 
+ */
+async function getMessageFromDOM() {
+  const response = await fetch('/data');
+  const quote = await response.text(); //TODO: Currently displays tags, but I don't really care.
+  document.getElementById('message-container').innerText = quote;
+}
