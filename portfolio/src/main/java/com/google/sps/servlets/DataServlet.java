@@ -34,7 +34,7 @@ public class DataServlet extends HttpServlet {
    */
   @Override
   public void init() {
-    phrases = new ArrayList<>();
+    phrases = new ArrayList<String>();
     phrases.add(
         "In the whole world no poor devil is lynched, "
         + "no wretch is tortured, in whom I too am not "
@@ -62,9 +62,11 @@ public class DataServlet extends HttpServlet {
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
    * the Gson library dependency to pom.xml.
    */
-  private String convertToJson(ArrayList sample) {
+  private String convertToJson(ArrayList<String> sample) {
     Gson gson = new Gson();
     String json = gson.toJson(sample);
     return json;
   }
+
+  
 }
