@@ -19,14 +19,52 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import com.google.gson.Gson;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  private ArrayList phrases;
+
+  /**
+   * Composes an arraylist with quotes from some black
+   * Authors that I have read.
+   */
+  @Override
+  public void init() {
+    phrases = new ArrayList<>();
+    phrases.add(
+        "In the whole world no poor devil is lynched, "
+        + "no wretch is tortured, in whom I too am not "
+        + "degraded and murdered. -Aime Cesaire");
+    phrases.add(
+        "Sometimes we are blessed with being able to choose "
+        + "the time, and the arena, and the manner of our "
+        + "revolution, but more usually we must do battle "
+        + "where we are standing. -Audre Lorde");
+    phrases.add(
+        "He who is reluctant to recognize me opposes me. "
+        + "-Frantz Fanon" );
+  }  
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello A!</h1>");
+    String json = convertToJson(phrases);
+    
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
+  }
+
+    /**
+   * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
+   * the Gson library dependency to pom.xml.
+   */
+  private String convertToJson(ArrayList sample) {
+    Gson gson = new Gson();
+    String json = gson.toJson(sample);
+    return json;
   }
 }
