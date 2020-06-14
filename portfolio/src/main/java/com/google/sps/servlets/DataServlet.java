@@ -13,14 +13,18 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
-import java.io.IOException;
+import com.google.gson.Gson;    // To use gson function
+// to use datastore capabilities
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import java.io.IOException; // to use exceptions
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import com.google.gson.Gson;
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -76,7 +80,14 @@ public class DataServlet extends HttpServlet {
     phrases.add(userString);
     response.setContentType("text/html");
     response.getWriter().println(userString);
+    long timestamp = System.currentTimeMillis();
 
+    Entity taskEntity = new Entity("Task");
+    taskEntity.setProperty("title", userString);
+    taskEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
     
     // Redirect back to the HTML page.
     response.sendRedirect("/forum.html");
