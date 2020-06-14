@@ -33,13 +33,14 @@ function addRandomGreeting() {
  * Promises. 
  */
 async function getMessageFromDOM() {
-  const response = await fetch('/data')
-  .then(response => response.json()).then(
+  const response = await fetch('/data').then(response => response.json()).then(
       (stats) => {
-
+          const num = Math.floor(Math.random() * stats.length);
+          document.getElementById('message-container').innerText = stats[num];
+          
       });
-  const quote = await response.text(); //TODO: Currently displays tags, but I don't really care.
-  document.getElementById('message-container').innerText = quote;
+    // const quote = await response.text(); //TODO: Currently displays tags, but I don't really care.
+
 }
 
 
