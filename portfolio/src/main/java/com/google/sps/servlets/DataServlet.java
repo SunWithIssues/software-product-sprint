@@ -35,18 +35,18 @@ public class DataServlet extends HttpServlet {
   @Override
   public void init() {
     phrases = new ArrayList<String>();
-    phrases.add(
-        "In the whole world no poor devil is lynched, "
-        + "no wretch is tortured, in whom I too am not "
-        + "degraded and murdered. -Aime Cesaire");
-    phrases.add(
-        "Sometimes we are blessed with being able to choose "
-        + "the time, and the arena, and the manner of our "
-        + "revolution, but more usually we must do battle "
-        + "where we are standing. -Audre Lorde");
-    phrases.add(
-        "He who is reluctant to recognize me opposes me. "
-        + "-Frantz Fanon" );
+    // phrases.add(
+    //     "In the whole world no poor devil is lynched, "
+    //     + "no wretch is tortured, in whom I too am not "
+    //     + "degraded and murdered. -Aime Cesaire");
+    // phrases.add(
+    //     "Sometimes we are blessed with being able to choose "
+    //     + "the time, and the arena, and the manner of our "
+    //     + "revolution, but more usually we must do battle "
+    //     + "where we are standing. -Audre Lorde");
+    // phrases.add(
+    //     "He who is reluctant to recognize me opposes me. "
+    //     + "-Frantz Fanon" );
   }  
 
   @Override
@@ -68,5 +68,29 @@ public class DataServlet extends HttpServlet {
     return json;
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Retrieve user's input from the form
+    String userString = getParameter(request, "text-input", "");
+
+    phrases.add(userString);
+    response.setContentType("text/html");
+    response.getWriter().println(userString);
+
+    
+    // Redirect back to the HTML page.
+    response.sendRedirect("/forum.html");
+  }
   
+    /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
 }
