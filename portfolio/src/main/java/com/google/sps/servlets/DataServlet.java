@@ -30,28 +30,7 @@ import java.util.ArrayList;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private ArrayList phrases;
 
-  /**
-   * Composes an arraylist with quotes from some black
-   * Authors that I have read.
-   */
-  @Override
-  public void init() {
-    phrases = new ArrayList<String>();
-    // phrases.add(
-    //     "In the whole world no poor devil is lynched, "
-    //     + "no wretch is tortured, in whom I too am not "
-    //     + "degraded and murdered. -Aime Cesaire");
-    // phrases.add(
-    //     "Sometimes we are blessed with being able to choose "
-    //     + "the time, and the arena, and the manner of our "
-    //     + "revolution, but more usually we must do battle "
-    //     + "where we are standing. -Audre Lorde");
-    // phrases.add(
-    //     "He who is reluctant to recognize me opposes me. "
-    //     + "-Frantz Fanon" );
-  }  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -77,7 +56,6 @@ public class DataServlet extends HttpServlet {
     // Retrieve user's input from the form
     String userString = getParameter(request, "text-input", "");
 
-    phrases.add(userString);
     response.setContentType("text/html");
     response.getWriter().println(userString);
     long timestamp = System.currentTimeMillis();

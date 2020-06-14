@@ -17,7 +17,15 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+      ["In the whole world no poor devil is lynched, "
+        + "no wretch is tortured, in whom I too am not "
+        + "degraded and murdered. -Aime Cesaire", 
+      "Sometimes we are blessed with being able to choose "
+        + "the time, and the arena, and the manner of our "
+        + "revolution, but more usually we must do battle "
+        + "where we are standing. -Audre Lorde", 
+      "He who is reluctant to recognize me opposes me. "
+        + "-Frantz Fanon"];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -33,9 +41,8 @@ function addRandomGreeting() {
  * Promises. 
  */
 async function getMessageFromDOM() {
-  const response = await fetch('/data').then(response => response.json()).then(
+  const response = await fetch('/_ah/admin').then(response => response.json()).then(
       (stats) => {
-        
           document.getElementById('message-container').innerText = stats;
           
       });
@@ -43,6 +50,15 @@ async function getMessageFromDOM() {
 
 }
 
+/** Fetches tasks from the server and adds them to the DOM. */
+function loadTasks() {
+  fetch('/list-tasks').then(response => response.json()).then((tasks) => {
+    const taskListElement = document.getElementById('message-container');
+    tasks.forEach((task) => {
+      taskListElement.appendChild(createTaskElement(task));
+    })
+  });
+}
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
