@@ -13,7 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-package com.google.sps.data;
+import com.google.sps.data.Message;
 import com.google.gson.Gson;    // To use gson function
 
 // to use query capabilities
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -46,13 +47,13 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
-    ArrayList<Message> messages = new ArrayList<Message>();
+    List<Message> messages = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
       long author = entity.getKey().getId(); // TODO: Differentiate author and id
 
-      response.getOutputStream().println(message); // IMPORTANT, dont kno the importance of this
+    //   response.getOutputStream().println(message); // IMPORTANT, dont kno the importance of this
 
       Message message = new Message(comment, author, timestamp);
       messages.add(message);
@@ -69,7 +70,7 @@ public class DataServlet extends HttpServlet {
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
    * the Gson library dependency to pom.xml.
    */
-  private String convertToJson(ArrayList<String> sample) {
+  private String convertToJson(List<Message> sample) {
     Gson gson = new Gson();
     String json = gson.toJson(sample);
     return json;
