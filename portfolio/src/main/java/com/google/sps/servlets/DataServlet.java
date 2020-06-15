@@ -13,7 +13,13 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+package com.google.sps.data;
 import com.google.gson.Gson;    // To use gson function
+
+// to use query capabilities
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 // to use datastore capabilities
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -34,10 +40,28 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJson(phrases);
+    Query query = new Query("Mess").addSort("timestamp", SortDirection.DESCENDING);
+
     
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    
+    ArrayList<Message> messages = new ArrayList<Message>();
+    for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("comment");
+      long timestamp = (long) entity.getProperty("timestamp");
+      long author = entity.getKey().getId(); // TODO: Differentiate author and id
+
+      response.getOutputStream().println(message); // IMPORTANT, dont kno the importance of this
+
+      Message message = new Message(comment, author, timestamp);
+      messages.add(message);
+    }
+
+    String json = convertToJson(messages);
     response.setContentType("application/json;");
     response.getWriter().println(json);
+
 
   }
 
@@ -55,14 +79,13 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retrieve user's input from the form
     String userString = getParameter(request, "text-input", "");
-
-    response.setContentType("text/html");
-    response.getWriter().println(userString);
     long timestamp = System.currentTimeMillis();
 
-    Entity taskEntity = new Entity("Task");
-    taskEntity.setProperty("title", userString);
+    Entity taskEntity = new Entity("Mess");
+    taskEntity.setProperty("comment", userString);
     taskEntity.setProperty("timestamp", timestamp);
+    taskEntity.setProperty("author", taskEntity.getKey().getId()); //TODO: Differentiate author and id
+    
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(taskEntity);
