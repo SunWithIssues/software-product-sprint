@@ -46,19 +46,23 @@ async function getMessageFromDOM() {
           document.getElementById('message-container').innerText = stats;
           
       });
-    // const quote = await response.text(); //TODO: Currently displays tags, but I don't really care.
-
 }
 
 /** Fetches tasks from the server and adds them to the DOM. */
 function loadTasks() {
-  fetch('/list-tasks').then(response => response.json()).then((tasks) => {
-    const taskListElement = document.getElementById('message-container');
-    tasks.forEach((task) => {
-      taskListElement.appendChild(createTaskElement(task));
+  fetch('/data').then(response => response.json()).then((messages) => {
+    const messagesListEl = document.getElementById('task-list');
+    messages.forEach((message) => {
+      const messageEl = document.createElement('li');
+      messageEl.className = "Message";
+      messageEl.innerHTML ='';
+      messageEl.appendChild(createListElement(message.comment));
+      messageEl.appendChild(createListElement(message.timestamp));
+      messagesListEl.appendChild(messageEl);
     })
   });
 }
+
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {

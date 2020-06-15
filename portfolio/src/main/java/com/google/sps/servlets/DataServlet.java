@@ -53,8 +53,6 @@ public class DataServlet extends HttpServlet {
       long timestamp = (long) entity.getProperty("timestamp");
       long author = entity.getKey().getId(); // TODO: Differentiate author and id
 
-    //   response.getOutputStream().println(message); // IMPORTANT, dont kno the importance of this
-
       Message message = new Message(comment, author, timestamp);
       messages.add(message);
     }

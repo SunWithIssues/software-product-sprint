@@ -1,7 +1,7 @@
 package com.google.sps.data;
 
 public class Message {
-    private String comment;
+    public String comment;
     private long author;
     private long timestamp;
     private String email;
