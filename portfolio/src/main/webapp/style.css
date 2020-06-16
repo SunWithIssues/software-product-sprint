@@ -59,6 +59,12 @@ body {
   margin-top: 20px;
 }
 
+#list_container {
+    width: 45%;
+}
+
 #task-list {
     list-style-type: none;
+    background-color: #A9A9A9;
+    word-wrap: normal;
 }

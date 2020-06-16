@@ -57,6 +57,7 @@ function loadTasks() {
       messageEl.className = "Message";
       messageEl.innerHTML ='';
       messageEl.appendChild(createListElement(message.comment));
+      messageEl.appendChild(createListElement("---"));
       messageEl.appendChild(createListElement(message.timestamp));
       messageEl.appendChild(document.createElement('hr'));
       messagesListEl.appendChild(messageEl);
