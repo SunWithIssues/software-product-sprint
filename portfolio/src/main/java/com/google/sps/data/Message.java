@@ -7,17 +7,17 @@ public class Message {
     public String email;
 
     // Email should be optional
-    public Message(String c, long a, long t, String e){
-        comment=c; 
-        author=a; 
-        timestamp=t; 
-        email=e;
+    public Message(String comment, long author, long timestamp, String email){
+        this.comment=comment; 
+        this.author=author; 
+        this.timestamp=timestamp; 
+        this.email=email;
     }
 
-    public Message(String c, long a, long t){
-        comment=c; 
-        author=a; 
-        timestamp=t; 
+    public Message(String comment, long author, long timestamp){
+        this.comment=comment; 
+        this.author=author; 
+        this.timestamp=timestamp; 
         email='';
     }
 
