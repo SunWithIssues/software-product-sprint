@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="loadTasks()">
 
     <!------------------------------------------------------>
     <!-------------------- Banner -------------------------->
@@ -23,6 +23,23 @@
       <hr>
     </div>
 
+    <!------------------------------------------------------>
+    <!----------------- Comment Section -------------------->
+    <!------------------------------------------------------>
+    <div id="comments">
+      <button onclick="getMessageFromDOM()">Mess from Dom</button>
+      <div id="message-container"></div>
+    </div>
+
+    <form action="/data" method="POST">
+      <p>Enter Comments Here</p>
+      <textarea name="text-input"></textarea>
+      <br>
+      <input type="submit" />
+
+    </form><hr>
+
+    <ul id="task-list"></ul>
 
   </body>
 </html>

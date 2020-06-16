@@ -17,7 +17,15 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+      ["In the whole world no poor devil is lynched, "
+        + "no wretch is tortured, in whom I too am not "
+        + "degraded and murdered. -Aime Cesaire", 
+      "Sometimes we are blessed with being able to choose "
+        + "the time, and the arena, and the manner of our "
+        + "revolution, but more usually we must do battle "
+        + "where we are standing. -Audre Lorde", 
+      "He who is reluctant to recognize me opposes me. "
+        + "-Frantz Fanon"];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -33,7 +41,34 @@ function addRandomGreeting() {
  * Promises. 
  */
 async function getMessageFromDOM() {
-  const response = await fetch('/data');
-  const quote = await response.text(); //TODO: Currently displays tags, but I don't really care.
-  document.getElementById('message-container').innerText = quote;
+  const response = await fetch('/_ah/admin').then(response => response.json()).then(
+      (stats) => {
+          document.getElementById('message-container').innerText = stats;
+          
+      });
 }
+
+/** Fetches tasks from the server and adds them to the DOM. */
+function loadTasks() {
+  fetch('/data').then(response => response.json()).then((messages) => {
+    const messagesListEl = document.getElementById('task-list');
+    messages.forEach((message) => {
+      const messageEl = document.createElement('li');
+      messageEl.className = "Message";
+      messageEl.innerHTML ='';
+      messageEl.appendChild(createListElement(message.comment));
+      messageEl.appendChild(createListElement(message.timestamp));
+      messageEl.appendChild(document.createElement('hr'));
+      messagesListEl.appendChild(messageEl);
+    })
+  });
+}
+
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
