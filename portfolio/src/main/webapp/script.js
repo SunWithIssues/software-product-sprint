@@ -58,6 +58,7 @@ function loadTasks() {
       messageEl.innerHTML ='';
       messageEl.appendChild(createListElement(message.comment));
       messageEl.appendChild(createListElement(message.timestamp));
+      messageEl.appendChild(document.createElement('hr'));
       messagesListEl.appendChild(messageEl);
     })
   });
@@ -70,3 +71,4 @@ function createListElement(text) {
   liElement.innerText = text;
   return liElement;
 }
+

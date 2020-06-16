@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -52,8 +53,9 @@ public class DataServlet extends HttpServlet {
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
       long author = entity.getKey().getId(); // TODO: Differentiate author and id
+      Date day = new Date(timestamp);
 
-      Message message = new Message(comment, author, timestamp);
+      Message message = new Message(comment, author, day.toString());
       messages.add(message);
     }
 
@@ -79,7 +81,7 @@ public class DataServlet extends HttpServlet {
     // Retrieve user's input from the form
     String userString = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis(); // gets time user submitted to form
-
+    
     // sets property of message
     Entity taskEntity = new Entity("Mess");
     taskEntity.setProperty("comment", userString);
