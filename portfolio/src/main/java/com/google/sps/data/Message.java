@@ -2,9 +2,9 @@ package com.google.sps.data;
 
 public class Message {
     public String comment;
-    private long author;
-    private long timestamp;
-    private String email;
+    public long author;
+    public long timestamp;
+    public String email;
 
     // Email should be optional
     public Message(String c, long a, long t, String e){
@@ -18,12 +18,8 @@ public class Message {
         comment=c; 
         author=a; 
         timestamp=t; 
-        email=null;
+        email='';
     }
 
-    public String getComment(){return comment;}
-    public void setComment(String c){comment=c;}
-    public long getAuthor(){return author;}
-    public long getTimestamp(){return timestamp;}
-    public String getEmail(){return email;}
+
 }
