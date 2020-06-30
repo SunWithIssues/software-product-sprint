@@ -14,10 +14,49 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Collection;
+import java.util.HashSet;
+
 
 public final class FindMeetingQuery {
+
+  private Collection<TimeRange> collect = new ArrayList<TimeRange>();
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    // throw new UnsupportedOperationException("TODO: Implement this method.");
+
+    // Collection<TimeRange> collect = new ArrayList();
+    //  = new Collection<TimeRange>();
+    long duration = request.getDuration();                 // Duration of the meeting, request
+    Collection<String> attendees = request.getAttendees(); // Attendees of the meeting, request
+
+    // For any request, where the duration is greater than 24 hours. No 
+    //  times can be given.
+    if (duration > TimeRange.WHOLE_DAY.duration()){
+        return collect;
+    }
+    // For any request, where no events are schedule. The whole day can be
+    //  used.
+    else if(events.isEmpty()){ 
+        return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+    collect = Arrays.asList(TimeRange.WHOLE_DAY);
+
+    for(Event e: events){
+        TimeRange range = e.getWhen();
+        for(TimeRange r: collect){
+            if(r.contains(range)){
+                collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                collect.add(TimeRange.fromStartEnd(range.end(), r.end(), true));
+                
+            }
+            collect.remove(r);
+        }
+    }
+
+    return collect;
   }
 }
