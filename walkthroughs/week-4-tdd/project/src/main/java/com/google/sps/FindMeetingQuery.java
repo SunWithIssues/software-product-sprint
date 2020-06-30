@@ -43,17 +43,28 @@ public final class FindMeetingQuery {
 
     collect.add(TimeRange.WHOLE_DAY);
 
+    //O(n*m)
     for(Event e: events){
         TimeRange range = e.getWhen();
         for(TimeRange r: collect){
             // IMPORTANT: Should I check if the range==r? Would this create two TimeRange objects
                 // unnecessarily in this case?
             if(r.contains(range)){
-                collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
-                collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false)); 
+                if(r.start() == range.start()){
+                    collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
+                }
+                else if(r.end() == range.end()){
+                    collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                }
+                else{
+                    collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                    collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false)); 
+                }
                 collect.remove(r);
-                break; 
+                break; // If it is contained, then no other free time is a concern.
             }
+            // Since the range for the event can overlap multiple free times, we must
+                // check all free times. Hence it does not end with a break statement.
             else if(r.overlaps(range)){
                 if(r.contains(range.start())){
                     collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
@@ -69,4 +80,6 @@ public final class FindMeetingQuery {
 
     return collect;
   }
+
+
 }
