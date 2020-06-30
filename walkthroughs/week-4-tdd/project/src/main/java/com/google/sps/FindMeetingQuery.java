@@ -43,17 +43,19 @@ public final class FindMeetingQuery {
     else if(events.isEmpty()){ 
         return Arrays.asList(TimeRange.WHOLE_DAY);
     }
-    collect = Arrays.asList(TimeRange.WHOLE_DAY);
+
+    collect.add(TimeRange.WHOLE_DAY);
+    // collect.add(TimeRange.fromStartEnd(0,60,false));
 
     for(Event e: events){
         TimeRange range = e.getWhen();
         for(TimeRange r: collect){
             if(r.contains(range)){
                 collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
-                collect.add(TimeRange.fromStartEnd(range.end(), r.end(), true));
-                
+                collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));  
+                collect.remove(r);
             }
-            collect.remove(r);
+            break;
         }
     }
 
