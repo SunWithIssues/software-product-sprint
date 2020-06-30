@@ -121,6 +121,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
+  // TEST 5
   @Test
   public void overlappingEvents() {
     // Have an event for each person, but have their events overlap. We should only see two options.
@@ -147,7 +148,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test
+  @Test //Test Six
   public void nestedEvents() {
     // Have an event for each person, but have one person's event fully contain another's event. We
     // should see two options.
@@ -174,7 +175,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test
+  @Test // Test Seven
   public void doubleBookedPeople() {
     // Have one person, but have them registered to attend two events at the same time.
     //
@@ -199,7 +200,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test
+  @Test //Test Eight
   public void justEnoughRoom() {
     // Have one person, but make it so that there is just enough room at one point in the day to
     // have the meeting.

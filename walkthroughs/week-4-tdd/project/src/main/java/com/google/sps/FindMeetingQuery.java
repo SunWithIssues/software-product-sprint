@@ -26,10 +26,7 @@ public final class FindMeetingQuery {
   private Collection<TimeRange> collect = new ArrayList<TimeRange>();
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    // throw new UnsupportedOperationException("TODO: Implement this method.");
 
-    // Collection<TimeRange> collect = new ArrayList();
-    //  = new Collection<TimeRange>();
     long duration = request.getDuration();                 // Duration of the meeting, request
     Collection<String> attendees = request.getAttendees(); // Attendees of the meeting, request
 
@@ -45,16 +42,26 @@ public final class FindMeetingQuery {
     }
 
     collect.add(TimeRange.WHOLE_DAY);
-    // collect.add(TimeRange.fromStartEnd(0,60,false));
 
     for(Event e: events){
         TimeRange range = e.getWhen();
         for(TimeRange r: collect){
+            // IMPORTANT: Should I check if the range==r? Would this create two TimeRange objects
+                // unnecessarily in this case?
             if(r.contains(range)){
                 collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
-                collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));  
+                collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false)); 
                 collect.remove(r);
-                break;
+                break; 
+            }
+            else if(r.overlaps(range)){
+                if(r.contains(range.start())){
+                    collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                }
+                else{
+                    collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
+                }
+                collect.remove(r);
             }
             
         }
