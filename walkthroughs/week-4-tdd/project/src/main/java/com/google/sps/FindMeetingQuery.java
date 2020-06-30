@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Collection;
-import java.util.HashSet;
 
 
 public final class FindMeetingQuery {
 
   private Collection<TimeRange> collect = new ArrayList<TimeRange>();
+  private boolean flag = true;
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
@@ -46,37 +46,58 @@ public final class FindMeetingQuery {
     //O(n*m)
     for(Event e: events){
         TimeRange range = e.getWhen();
-        for(TimeRange r: collect){
-            // IMPORTANT: Should I check if the range==r? Would this create two TimeRange objects
-                // unnecessarily in this case?
-            if(r.contains(range)){
-                if(r.start() == range.start()){
-                    collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
-                }
-                else if(r.end() == range.end()){
-                    collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
-                }
-                else{
-                    collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
-                    collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false)); 
-                }
-                collect.remove(r);
-                break; // If it is contained, then no other free time is a concern.
+        Collection<String> people = e.getAttendees();
+        
+        // Check if event people match the attendees request
+        for (String a: attendees){
+            if(people.contains(a)){
+                flag = true;
+                break;
             }
-            // Since the range for the event can overlap multiple free times, we must
-                // check all free times. Hence it does not end with a break statement.
-            else if(r.overlaps(range)){
-                if(r.contains(range.start())){
-                    collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
-                }
-                else{
-                    collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
-                }
-                collect.remove(r);
-            }
-            
+            flag=false;
         }
-    }
+
+        if(flag){
+            for(TimeRange r: collect){
+                // IMPORTANT: Should I check if the range==r? Would this create two TimeRange objects
+                    // unnecessarily in this case?
+                if(r.contains(range)){
+                    if(r.start() == range.start()){
+                        collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
+                    }
+                    else if(r.end() == range.end()){
+                        collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                    }
+                    else{
+                        collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                        collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false)); 
+                    }
+                    collect.remove(r);
+                    break; // If it is contained, then no other free time is a concern.
+                }
+                // Since the range for the event can overlap multiple free times, we must
+                    // check all free times. Hence it does not end with a break statement.
+                else if(r.overlaps(range)){
+                    if(r.contains(range.start())){
+                        collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                    }
+                    else{
+                        collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
+                    }
+                    collect.remove(r);
+                }
+                
+            }
+        } // End of Flag check
+    }// End of event loop
+
+
+    // TODO: This could be strategically placed in the loop before.
+    // for(TimeRange r: collect){
+    //     if(duration > (long)r.duration()){
+    //         collect.remove(r);
+    //     }
+    // }
 
     return collect;
   }
