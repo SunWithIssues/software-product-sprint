@@ -54,8 +54,9 @@ public final class FindMeetingQuery {
                 collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
                 collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));  
                 collect.remove(r);
+                break;
             }
-            break;
+            
         }
     }
 
