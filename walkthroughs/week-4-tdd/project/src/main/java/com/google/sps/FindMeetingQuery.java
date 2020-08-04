@@ -41,22 +41,28 @@ public final class FindMeetingQuery {
         return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
+    // Otherwise, we add the time of the whole day as currently available
     collect.add(TimeRange.WHOLE_DAY);
 
-    //O(n*m)
-    for(Event e: events){
-        TimeRange range = e.getWhen();
-        Collection<String> people = e.getAttendees();
+    // For each event within the day, we break up the time in O(n*m) where n is the
+    //   number of events and m is the number of ....
+    for(Event e: events){  
+        // The range of time necessary for already schedule event.
+        TimeRange range = e.getWhen();  
+        // The attendees in the already schedule event.              
+        Collection<String> people = e.getAttendees(); 
         
-        // Check if event people match the attendees request
+        // Check if already people of thr schedule event match the attendees request
         for (String a: attendees){
             if(people.contains(a)){
-                flag = true;
+                flag = true;  // They match
                 break;
             }
-            flag=false;
+            flag=false;       // They don't match
         }
 
+        // If they match, break of the calendar day to accomadate for the already scheduled event.
+        //  Otherwise, disregard this event.
         if(flag){
             for(TimeRange r: collect){
                 // IMPORTANT: Should I check if the range==r? Would this create two TimeRange objects
