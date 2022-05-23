@@ -1,5 +1,18 @@
 /* TODO: Come back and make a dark/light mode switch */
 
+
+#text {
+  width: 500px;
+  height: 125px;
+}
+
+#language {
+  display: block;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+ 
+
 body {
   background-color: #101010;
   color: #ffffff;
