@@ -14,10 +14,99 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Collection;
 
+
 public final class FindMeetingQuery {
+
+  private Collection<TimeRange> collect = new ArrayList<TimeRange>();
+  private boolean flag = true;
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+
+    long duration = request.getDuration();                 // Duration of the meeting, request
+    Collection<String> attendees = request.getAttendees(); // Attendees of the meeting, request
+
+    // For any request, where the duration is greater than 24 hours. No 
+    //  times can be given.
+    if (duration > TimeRange.WHOLE_DAY.duration()){
+        return collect;
+    }
+    // For any request, where no events are schedule. The whole day can be
+    //  used.
+    else if(events.isEmpty()){ 
+        return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+
+    // Otherwise, we add the time of the whole day as currently available
+    collect.add(TimeRange.WHOLE_DAY);
+
+    // For each event within the day, we break up the time in O(n*m) where n is the
+    //   number of events and m is the number of ....
+    for(Event e: events){  
+        // The range of time necessary for already schedule event.
+        TimeRange range = e.getWhen();  
+        // The attendees in the already schedule event.              
+        Collection<String> people = e.getAttendees(); 
+        
+        // Check if already people of thr schedule event match the attendees request
+        for (String a: attendees){
+            if(people.contains(a)){
+                flag = true;  // They match
+                break;
+            }
+            flag=false;       // They don't match
+        }
+
+        // If they match, break of the calendar day to accomadate for the already scheduled event.
+        //  Otherwise, disregard this event.
+        if(flag){
+            for(TimeRange r: collect){
+                // IMPORTANT: Should I check if the range==r? Would this create two TimeRange objects
+                    // unnecessarily in this case?
+                if(r.contains(range)){
+                    if(r.start() == range.start()){
+                        collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
+                    }
+                    else if(r.end() == range.end()){
+                        collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                    }
+                    else{
+                        collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                        collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false)); 
+                    }
+                    collect.remove(r);
+                    break; // If it is contained, then no other free time is a concern.
+                }
+                // Since the range for the event can overlap multiple free times, we must
+                    // check all free times. Hence it does not end with a break statement.
+                else if(r.overlaps(range)){
+                    if(r.contains(range.start())){
+                        collect.add(TimeRange.fromStartEnd(r.start(), range.start(), false));
+                    }
+                    else{
+                        collect.add(TimeRange.fromStartEnd(range.end(), r.end(), false));
+                    }
+                    collect.remove(r);
+                }
+                
+            }
+        } // End of Flag check
+    }// End of event loop
+
+
+    // TODO: This could be strategically placed in the loop before.
+    // for(TimeRange r: collect){
+    //     if(duration > (long)r.duration()){
+    //         collect.remove(r);
+    //     }
+    // }
+
+    return collect;
   }
+
+
 }

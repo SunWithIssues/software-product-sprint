@@ -16,6 +16,9 @@ package com.google.sps.servlets;
 import com.google.sps.data.Message;
 import com.google.gson.Gson;    // To use gson function
 
+// to allow for user login & user specific information
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 // to use query capabilities
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -42,6 +45,8 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    login_out(request, response);
+    
     Query query = new Query("Mess").addSort("timestamp", SortDirection.DESCENDING);
 
     
@@ -65,6 +70,27 @@ public class DataServlet extends HttpServlet {
 
 
   }
+
+  public void login_out(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("text/html");
+
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserLoggedIn()) {
+      String userEmail = userService.getCurrentUser().getEmail();
+      String urlToRedirectToAfterUserLogsOut = "/";
+      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+
+      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
+      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
+    } else {
+      String urlToRedirectToAfterUserLogsIn = "/";
+      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+
+      response.getWriter().println("<p>Hello stranger.</p>");
+      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+    }
+  }
+
 
     /**
    * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
